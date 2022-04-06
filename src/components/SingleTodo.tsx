@@ -3,11 +3,10 @@ import { Todo } from '../model';
 import { AiFillEdit, AiFillDelete, } from "react-icons/ai";
 import { MdDone } from "react-icons/md";
 import './styles.css';
-import TodoList from './TodoList';
 
 type Props = {
   todo: Todo,
-  todos: Todo[], // i don't understand this
+  todos: Todo[],
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
 
 }
@@ -23,9 +22,11 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
 
   return (
     <form className='todos__single'>
-      <span className="todos__single--text">
-        { todo.todo }
-      </span>
+      {todo.isDone ? (
+        <s className="todos__single--text">{ todo.todo }</s>
+        ) : (
+        <span className="todos__single--text">{ todo.todo }</span>
+      )}
       <div>
         <span className="icon"><AiFillEdit /></span>
         <span className="icon"><AiFillDelete /></span>
@@ -39,3 +40,9 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
 }
 
 export default SingleTodo
+
+// personal notes:
+/*
+todo.todo is a props passed down from model.ts. one of its attributes is the 'todo'  the description of the task.
+
+*/
