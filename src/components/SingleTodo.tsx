@@ -15,9 +15,15 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
   const handleDone = (id: number) => {
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? {...todo, isDone: !todo.isDone} : todo
+        todo.id === id ? {...todo, isDone: !todo.isDone} : todo // remember, !todo.isDone is shorthand for returning the opposite
       )
     );
+  };
+
+  const handleDelete = (id: number) => {
+    setTodos(
+      todos.filter((todo) => todo.id !== id)
+    )
   };
 
   return (
@@ -29,7 +35,7 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
       )}
       <div>
         <span className="icon"><AiFillEdit /></span>
-        <span className="icon"><AiFillDelete /></span>
+        <span className="icon" onClick={() => handleDelete(todo.id)} ><AiFillDelete /></span>
         <span className="icon" onClick={() => handleDone(todo.id)}>
           <MdDone />
         </span>
