@@ -28,26 +28,30 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
     )
   };
 
-  const handleEdit = (e: React.FormEvent) => {
+  const handleEdit = (e: React.FormEvent, id: number) => {
     e.preventDefault();
 
+    setTodos(
+      todos.map((todo) => (
+      todo.id === id ? {...todo, todo:editTodo} : todo
+    )));
+    setEditMode(false);
   }
 
   return (
-    <form className='todos__single'>
+    <form className='todos__single' onSubmit={(e) => handleEdit(e, todo.id)}>
       {editMode ? (
           <input 
             type="text" 
             value={editTodo} 
             onChange={(e) => setEditTodo(e.target.value)} 
             className='todos__single--text'/>
-
         ) : (
           todo.isDone ? (
-            <s className="todos__single--text">{editTodo}</s>
+            <s className="todos__single--text">{todo.todo}</s>
             ) : (
             <span className="todos__single--text">
-              {editTodo}
+              {todo.todo}
               </span>
           )
         )
@@ -78,6 +82,6 @@ export default SingleTodo
 
 // personal notes:
 /*
-todo.todo is a props passed down from model.ts. one of its attributes is the 'todo'  the description of the task.
-
+. todo.todo is a props passed down from model.ts. one of its attributes is the 'todo'  the description of the task.
+. this task single is created as a form, because it has the option to be edited on the spot. 
 */
