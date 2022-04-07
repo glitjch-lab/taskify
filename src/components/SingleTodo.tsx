@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Todo } from '../model';
 import { AiFillEdit, AiFillDelete, } from "react-icons/ai";
 import { MdDone } from "react-icons/md";
@@ -14,6 +14,14 @@ type Props = {
 const SingleTodo = ({ todo, todos, setTodos }: Props) => {
   const [ editMode, setEditMode ] = useState<boolean>(false);
   const [ editTodo, setEditTodo] = useState<string>(todo.todo)
+  
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  
+  }, [editMode])
+  
   const handleDone = (id: number) => {
     setTodos(
       todos.map((todo) =>
@@ -30,7 +38,6 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
 
   const handleEdit = (e: React.FormEvent, id: number) => {
     e.preventDefault();
-
     setTodos(
       todos.map((todo) => (
       todo.id === id ? {...todo, todo:editTodo} : todo
@@ -40,24 +47,23 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
 
   return (
     <form className='todos__single' onSubmit={(e) => handleEdit(e, todo.id)}>
+
       {editMode ? (
-          <input 
-            type="text" 
-            value={editTodo} 
-            onChange={(e) => setEditTodo(e.target.value)} 
-            className='todos__single--text'/>
+        <input 
+          ref={inputRef}
+          type="text"
+          value={editTodo}
+          onChange={e => setEditTodo(e.target.value)}
+          className="todos__single--text"
+        />
         ) : (
-          todo.isDone ? (
-            <s className="todos__single--text">{todo.todo}</s>
-            ) : (
-            <span className="todos__single--text">
-              {todo.todo}
-              </span>
-          )
+        todo.isDone ? (
+          <s className="todos__single--text">{todo.todo}</s>
+          ) : (  
+          <span className="todos__single--text">{todo.todo}</span>
         )
-
+      )
       }
-
       <div>
         <span className="icon" onClick={ () => {
           if (!editMode && !todo.isDone) {
